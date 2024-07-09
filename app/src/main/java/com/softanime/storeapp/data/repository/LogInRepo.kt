@@ -6,4 +6,5 @@ import javax.inject.Inject
 
 class LogInRepo @Inject constructor(private val api: ApiServices) {
     suspend fun postLogin(body: BodyLogin) = api.postLogin(body)
+    suspend fun postLoginVerify(body: BodyLogin) = api.postLoginVerify(body)
 }

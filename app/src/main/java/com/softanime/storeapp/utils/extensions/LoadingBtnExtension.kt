@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable
 import android.util.TypedValue
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.button.MaterialButton.IconGravity
+import com.softanime.storeapp.R
 
 private fun drawableProgress(context: Context): Drawable? {
     val value = TypedValue()
@@ -26,6 +27,7 @@ fun MaterialButton.enableLoading(loading : Boolean){
         if (drawable !is Animatable){
             drawable = drawableProgress(context)
             icon = drawable
+            setIconTintResource(R.color.white)
         }
         (drawable as Animatable).start()
         alpha = 0.5f

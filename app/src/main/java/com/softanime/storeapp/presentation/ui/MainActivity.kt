@@ -21,15 +21,10 @@ class MainActivity : AppCompatActivity() {
     //Binding
     private var _binding: ActivityMainBinding? = null
     private val binding get() = _binding!!
-
     // OTP
     @Inject
     lateinit var signatureHelper: AppSignatureHelper
     var hashCode = ""
-    @Inject
-    lateinit var smsReceiver: SMSBroadcastReceiver
-    private var intentFilter : IntentFilter? = null
-
     // Other
     private lateinit var navHost: NavHostFragment
 
@@ -61,24 +56,7 @@ class MainActivity : AppCompatActivity() {
 
         // Generate Hash code
         generateHashCode()
-
-        // Init BroadCastReceiver
-        initSmsReceiver()
-        smsListener()
     }
-
-    private fun smsListener() {
-        val client = SmsRetriever.getClient(this)
-        client.startSmsRetriever()
-    }
-
-    private fun initSmsReceiver() {
-        intentFilter = IntentFilter(SmsRetriever.SMS_RETRIEVED_ACTION)
-        smsReceiver.onReceiveMessage {
-            Log.i("OTP", "SMS: $it")
-        }
-    }
-
     private fun generateHashCode() {
         signatureHelper.appSignatures.forEach {
             hashCode = it
@@ -88,17 +66,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onNavigateUp(): Boolean {
         return navHost.navController.navigateUp() || super.onNavigateUp()
-    }
-
-    @SuppressLint("NewApi")
-    override fun onResume() {
-        super.onResume()
-        applicationContext.registerReceiver(smsReceiver,intentFilter, RECEIVER_EXPORTED)
-    }
-
-    override fun onStop() {
-        super.onStop()
-        applicationContext.unregisterReceiver(smsReceiver)
     }
 
     override fun onDestroy() {

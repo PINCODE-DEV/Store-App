@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import coil.load
 import com.softanime.storeapp.R
 import com.softanime.storeapp.databinding.FragmentLogInBinding
@@ -42,6 +43,7 @@ class LogInFragment : BaseFragment() {
     private val parentActivity by lazy { activity as MainActivity }
 
     // Others
+    private var phone = ""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -65,7 +67,8 @@ class LogInFragment : BaseFragment() {
                 root.hideKeyboard()
                 // Fill phone
                 logInBody.login = phoneEdt.text.toString()
-                if (phoneEdt.text.toString().length == 11) {
+                phone = phoneEdt.text.toString()
+                if (phone.length == 11) {
                     // Call api
                     if (isNetworkAvailable) {
                         viewModel.callLogInApi(logInBody)
@@ -106,6 +109,8 @@ class LogInFragment : BaseFragment() {
                         sendPhoneBtn.enableLoading(false)
                         response.data?.let {
                             // Go to Verify
+                            val direction = VerifyFragmentDirections.actionLogInFragmentToVerifyFragment(phone)
+                            findNavController().navigate(direction)
                         }
                     }
 

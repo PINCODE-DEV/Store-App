@@ -1,6 +1,7 @@
 package com.softanime.storeapp.presentation.ui.splash
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +9,7 @@ import android.view.ViewGroup
 import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.constraintlayout.utils.widget.MotionLabel
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.softanime.storeapp.R
 import com.softanime.storeapp.data.stored.SessionManager
 import com.softanime.storeapp.databinding.FragmentSplashBinding
@@ -60,12 +62,15 @@ class SplashFragment : Fragment() {
             ) {}
 
             override fun onTransitionCompleted(motionLayout: MotionLayout?, currentId: Int) {
+                //Check user
                 lifecycleScope.launch {
                     val token = sessionManager.getToken.first()
-                    if (token == null){
-                        // Go to Login
-                    }else{
-                        // Go to Home
+                    Log.e("userToken", token)
+                    findNavController().popBackStack(R.id.splashFragment, true)
+                    if (token.isEmpty()) {
+                        findNavController().navigate(R.id.action_splashFragment_to_loginNav)
+                    } else {
+                        //findNavController().navigate(R.id.actionToMain)
                     }
                 }
             }

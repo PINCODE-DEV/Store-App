@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
+    id("androidx.navigation.safeargs")
 }
 
 android {
@@ -97,5 +98,8 @@ dependencies {
 
     // Coil
     implementation(libs.coil)
+
+    // Pin
+    implementation(libs.pinview)
 
 }

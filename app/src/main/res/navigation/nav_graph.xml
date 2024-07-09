@@ -5,14 +5,43 @@
     android:id="@+id/nav_graph"
     app:startDestination="@id/splashFragment">
 
+    <!--Splash-->
     <fragment
         android:id="@+id/splashFragment"
         android:name="com.softanime.storeapp.presentation.ui.splash.SplashFragment"
         android:label="fragment_splash"
         tools:layout="@layout/fragment_splash" />
-    <fragment
-        android:id="@+id/logInFragment"
-        android:name="com.softanime.storeapp.presentation.ui.login.LogInFragment"
-        android:label="LogInFragment"
-        tools:layout="@layout/fragment_log_in"/>
+    <!--Action to Login-->
+    <action
+        android:id="@+id/action_splashFragment_to_loginNav"
+        app:destination="@id/navigation" />
+    <!--Nav Login-->
+    <navigation
+        android:id="@+id/navigation"
+        app:startDestination="@id/logInFragment">
+        <!--Login-->
+        <fragment
+            android:id="@+id/logInFragment"
+            android:name="com.softanime.storeapp.presentation.ui.login.LogInFragment"
+            android:label="LogInFragment"
+            tools:layout="@layout/fragment_log_in"/>
+        <!--Action to Verify-->
+        <action
+            android:id="@+id/action_logInFragment_to_verifyFragment"
+            app:destination="@id/verifyFragment"
+            app:enterAnim="@anim/from_left"
+            app:exitAnim="@anim/to_right"
+            app:popEnterAnim="@anim/from_right"
+            app:popExitAnim="@anim/to_left" />
+        <!--Verify-->
+        <fragment
+            android:id="@+id/verifyFragment"
+            android:name="com.softanime.storeapp.presentation.ui.login.VerifyFragment"
+            android:label="VerifyFragment"
+            tools:layout="@layout/fragment_verify" >
+            <argument
+                android:name="phone"
+                app:argType="string" />
+        </fragment>
+    </navigation>
 </navigation>
