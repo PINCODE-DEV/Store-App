@@ -14,6 +14,8 @@ import com.softanime.storeapp.R
 import com.softanime.storeapp.databinding.FragmentLogInBinding
 import com.softanime.storeapp.presentation.ui.MainActivity
 import com.softanime.storeapp.presentation.viewModel.LogInViewModel
+import com.softanime.storeapp.utils.base.BaseFragment
+import com.softanime.storeapp.utils.extensions.enableLoading
 import com.softanime.storeapp.utils.extensions.hideKeyboard
 import com.softanime.storeapp.utils.extensions.showSnackBar
 import com.softanime.storeapp.utils.network.NetworkRequest
@@ -24,7 +26,7 @@ import javax.inject.Inject
 import kotlin.math.log
 
 @AndroidEntryPoint
-class LogInFragment : Fragment() {
+class LogInFragment : BaseFragment() {
     //Binding
     private var _binding: FragmentLogInBinding? = null
     private val binding get() = _binding!!
@@ -65,7 +67,9 @@ class LogInFragment : Fragment() {
                 logInBody.login = phoneEdt.text.toString()
                 if (phoneEdt.text.toString().length == 11) {
                     // Call api
-                    viewModel.callLogInApi(logInBody)
+                    if (isNetworkAvailable) {
+                        viewModel.callLogInApi(logInBody)
+                    }
                 }
             }
         }
@@ -84,6 +88,7 @@ class LogInFragment : Fragment() {
                         playAnimation()
                     }
                 }
+
                 override fun onAnimationCancel(p0: Animator) {}
                 override fun onAnimationRepeat(p0: Animator) {}
             })
@@ -94,14 +99,18 @@ class LogInFragment : Fragment() {
         binding.apply {
             viewModel.loginData.observe(viewLifecycleOwner) { response ->
                 when (response) {
-                    is NetworkRequest.Loading -> {}
+                    is NetworkRequest.Loading -> {
+                        sendPhoneBtn.enableLoading(true)
+                    }
                     is NetworkRequest.Success -> {
+                        sendPhoneBtn.enableLoading(false)
                         response.data?.let {
                             // Go to Verify
                         }
                     }
 
                     is NetworkRequest.Error -> {
+                        sendPhoneBtn.enableLoading(false)
                         // Show Error
                         root.showSnackBar(response.message!!)
                     }

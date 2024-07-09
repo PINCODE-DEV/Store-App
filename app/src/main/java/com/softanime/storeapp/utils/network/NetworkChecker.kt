@@ -1,5 +1,6 @@
 package com.softanime.storeapp.utils.network
 
+import android.annotation.SuppressLint
 import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkCapabilities
@@ -8,6 +9,7 @@ import android.os.Build
 import kotlinx.coroutines.flow.MutableStateFlow
 import javax.inject.Inject
 
+@Suppress("DEPRECATION")
 class NetworkChecker @Inject constructor(
     private val manager: ConnectivityManager,
     private val request: NetworkRequest
@@ -15,6 +17,7 @@ class NetworkChecker @Inject constructor(
     private val isNetworkAvailable = MutableStateFlow(false)
     private var capabilities: NetworkCapabilities? = null
 
+    @SuppressLint("ObsoleteSdkInt")
     fun checkNetwork(): MutableStateFlow<Boolean> {
         // Register
         manager.registerNetworkCallback(request, this)
