@@ -15,6 +15,7 @@ import com.softanime.storeapp.R
 import com.softanime.storeapp.databinding.FragmentLogInBinding
 import com.softanime.storeapp.presentation.ui.MainActivity
 import com.softanime.storeapp.presentation.viewModel.LogInViewModel
+import com.softanime.storeapp.utils.IS_CALLED_VERIFY
 import com.softanime.storeapp.utils.base.BaseFragment
 import com.softanime.storeapp.utils.extensions.enableLoading
 import com.softanime.storeapp.utils.extensions.hideKeyboard
@@ -109,8 +110,11 @@ class LogInFragment : BaseFragment() {
                         sendPhoneBtn.enableLoading(false)
                         response.data?.let {
                             // Go to Verify
-                            val direction = VerifyFragmentDirections.actionLogInFragmentToVerifyFragment(phone)
-                            findNavController().navigate(direction)
+                            if (!IS_CALLED_VERIFY){
+                                val direction = VerifyFragmentDirections.actionLogInFragmentToVerifyFragment(phone)
+                                findNavController().navigate(direction)
+                                IS_CALLED_VERIFY = true
+                            }
                         }
                     }
 

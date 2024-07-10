@@ -24,7 +24,7 @@
             android:id="@+id/logInFragment"
             android:name="com.softanime.storeapp.presentation.ui.login.LogInFragment"
             android:label="LogInFragment"
-            tools:layout="@layout/fragment_log_in"/>
+            tools:layout="@layout/fragment_log_in" />
         <!--Action to Verify-->
         <action
             android:id="@+id/action_logInFragment_to_verifyFragment"
@@ -38,10 +38,45 @@
             android:id="@+id/verifyFragment"
             android:name="com.softanime.storeapp.presentation.ui.login.VerifyFragment"
             android:label="VerifyFragment"
-            tools:layout="@layout/fragment_verify" >
+            tools:layout="@layout/fragment_verify">
             <argument
                 android:name="phone"
                 app:argType="string" />
         </fragment>
+    </navigation>
+
+    <!--Action to Main-->
+    <action
+        android:id="@+id/action_to_nav_main"
+        app:destination="@id/nav_main" />
+
+    <!--Nav Main-->
+    <navigation
+        android:id="@+id/nav_main"
+        app:startDestination="@id/homeFragment">
+        <!--Cart Frag-->
+        <fragment
+            android:id="@+id/cartFragment"
+            android:name="com.softanime.storeapp.presentation.ui.cart.CartFragment"
+            android:label="fragment_cart"
+            tools:layout="@layout/fragment_cart" />
+        <!--Profile Frag-->
+        <fragment
+            android:id="@+id/profileFragment"
+            android:name="com.softanime.storeapp.presentation.ui.profile.ProfileFragment"
+            android:label="fragment_profile"
+            tools:layout="@layout/fragment_profile" />
+        <!--Cat Frag-->
+        <fragment
+            android:id="@+id/categoriesFragment"
+            android:name="com.softanime.storeapp.presentation.ui.categories.CategoriesFragment"
+            android:label="fragment_categories"
+            tools:layout="@layout/fragment_categories" />
+        <!--Home Frag-->
+        <fragment
+            android:id="@+id/homeFragment"
+            android:name="com.softanime.storeapp.presentation.ui.home.HomeFragment"
+            android:label="fragment_home"
+            tools:layout="@layout/fragment_home" />
     </navigation>
 </navigation>

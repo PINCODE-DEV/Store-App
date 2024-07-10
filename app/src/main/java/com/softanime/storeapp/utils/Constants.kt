@@ -14,3 +14,6 @@ const val AUTHORIZATION = "authorization"
 const val BEARER = "bearer"
 const val ACCEPT = "accept"
 const val APPLICATION_JSON = "application/json"
+
+// Others
+var IS_CALLED_VERIFY = false
