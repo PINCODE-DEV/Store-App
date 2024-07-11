@@ -47,10 +47,12 @@ class MainActivity : AppCompatActivity() {
         }
         navHost.navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
-                //R.id.splashFragment -> { binding.bottomNav.isVisible = true }
-                else -> {
+                R.id.homeFragment -> { binding.bottomNav.isVisible = true }
+                R.id.cartFragment -> { binding.bottomNav.isVisible = true }
+                R.id.categoriesFragment -> { binding.bottomNav.isVisible = true }
+                R.id.profileFragment -> { binding.bottomNav.isVisible = true }
+                else ->
                     binding.bottomNav.isVisible = false
-                }
             }
         }
 

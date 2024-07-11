@@ -72,6 +72,7 @@ class LogInFragment : BaseFragment() {
                 if (phone.length == 11) {
                     // Call api
                     if (isNetworkAvailable) {
+                        IS_CALLED_VERIFY = true
                         viewModel.callLogInApi(logInBody)
                     }
                 }
@@ -110,10 +111,9 @@ class LogInFragment : BaseFragment() {
                         sendPhoneBtn.enableLoading(false)
                         response.data?.let {
                             // Go to Verify
-                            if (!IS_CALLED_VERIFY){
+                            if (IS_CALLED_VERIFY){
                                 val direction = VerifyFragmentDirections.actionLogInFragmentToVerifyFragment(phone)
                                 findNavController().navigate(direction)
-                                IS_CALLED_VERIFY = true
                             }
                         }
                     }
