@@ -11,7 +11,7 @@ const val PING_INTERVAL = 3L
 const val NAMED_PING = "named_ping"
 // Auth
 const val AUTHORIZATION = "authorization"
-const val BEARER = "bearer"
+const val BEARER = "Bearer"
 const val ACCEPT = "accept"
 const val APPLICATION_JSON = "application/json"
 

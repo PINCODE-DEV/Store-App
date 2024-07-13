@@ -1,5 +1,6 @@
 package com.softanime.storeapp.di
 
+import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.softanime.storeapp.data.network.ApiServices
@@ -66,6 +67,7 @@ object NetworkModule {
             val token = runBlocking {
                 session.getToken.first().toString()
             }
+            Log.i("LOG", "Header : $token")
             chain.proceed(chain.request().newBuilder().also {
                 it.addHeader(AUTHORIZATION, "$BEARER $token")
                 it.addHeader(ACCEPT, APPLICATION_JSON)

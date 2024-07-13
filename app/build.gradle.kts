@@ -102,4 +102,12 @@ dependencies {
     // Pin
     implementation(libs.pinview)
 
+    // Carousel Recyclerview
+    implementation(libs.carouselrecyclerview)
+    implementation(libs.circleindicator)
+
+    // Shimmer
+    implementation(libs.shimmer)
+    implementation(libs.shimmer.recyclerview)
+
 }

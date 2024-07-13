@@ -1,20 +1,19 @@
 package com.softanime.storeapp.presentation.ui
 
-import android.annotation.SuppressLint
-import android.content.IntentFilter
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
-import com.google.android.gms.auth.api.phone.SmsRetriever
 import com.softanime.storeapp.R
 import com.softanime.storeapp.databinding.ActivityMainBinding
 import com.softanime.storeapp.utils.otp.AppSignatureHelper
-import com.softanime.storeapp.utils.otp.SMSBroadcastReceiver
 import dagger.hilt.android.AndroidEntryPoint
+import io.github.inflationx.viewpump.ViewPumpContextWrapper
 import javax.inject.Inject
+
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -68,6 +67,10 @@ class MainActivity : AppCompatActivity() {
 
     override fun onNavigateUp(): Boolean {
         return navHost.navController.navigateUp() || super.onNavigateUp()
+    }
+
+    override fun attachBaseContext(newBase: Context?) {
+        super.attachBaseContext(ViewPumpContextWrapper.wrap(newBase!!))
     }
 
     override fun onDestroy() {
