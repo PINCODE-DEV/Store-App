@@ -1,7 +1,5 @@
 package com.softanime.storeapp.presentation.viewModel
 
-import academy.nouri.storeapp.data.models.login.BodyLogin
-import academy.nouri.storeapp.data.models.login.ResponseLogin
 import academy.nouri.storeapp.data.models.profile.ResponseProfile
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -30,7 +28,7 @@ class ProfileViewModel @Inject constructor(private val repo: ProfileRepo) : View
     val profileData: LiveData<NetworkRequest<ResponseProfile>> = _profileData
 
     // Profile
-    fun callProfileApi() = viewModelScope.launch {
+    private fun callProfileApi() = viewModelScope.launch {
         // Loading
         _profileData.value = NetworkRequest.Loading()
         val response = repo.getProfile()

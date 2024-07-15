@@ -65,10 +65,9 @@ class SplashFragment : Fragment() {
                 //Check user
                 lifecycleScope.launch {
                     val token = sessionManager.getToken.first()
-                    Log.e("userToken", token)
                     findNavController().popBackStack(R.id.splashFragment, true)
                     Log.i("LOG", "Token: $token")
-                    if (token.isEmpty()) {
+                    if (token == null) {
                         findNavController().navigate(R.id.action_splashFragment_to_loginNav)
                     } else {
                         findNavController().navigate(R.id.action_to_nav_main)

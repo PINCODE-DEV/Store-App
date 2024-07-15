@@ -194,14 +194,17 @@ class VerifyFragment : BaseFragment() {
                         timerLay.alpha = 1.0f
                         response.data?.let { data ->
                             lifecycleScope.launch {
+                                Log.i("LOG", "loadVerifyData: ${data.accessToken}")
+                                // save token
                                 sessionManager.saveToken(data.accessToken.toString())
+                                // destroy lifeCycle
+                                findNavController().popBackStack(R.id.logInFragment, true)
+                                findNavController().popBackStack(R.id.verifyFragment, true)
+                                root.hideKeyboard()
+                                // Go to Home
+                                findNavController().navigate(R.id.action_to_nav_main)
                             }
                         }
-                        root.hideKeyboard()
-                        findNavController().popBackStack(R.id.logInFragment, true)
-                        findNavController().popBackStack(R.id.verifyFragment, true)
-                        // Go to Home
-                        findNavController().navigate(R.id.action_to_nav_main)
                     }
 
                     is NetworkRequest.Error -> {
