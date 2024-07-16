@@ -3,12 +3,16 @@ package com.softanime.storeapp.presentation.viewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
+import com.softanime.storeapp.data.model.home.ProductsCategories
 import com.softanime.storeapp.data.model.home.ResponseBanners
 import com.softanime.storeapp.data.model.home.ResponseDiscount
 import com.softanime.storeapp.data.repository.HomeRepo
 import com.softanime.storeapp.utils.ELECTRONIC_DEVICES
 import com.softanime.storeapp.utils.GENERAL
+import com.softanime.storeapp.utils.NEW
+import com.softanime.storeapp.utils.SORT
 import com.softanime.storeapp.utils.network.NetworkRequest
 import com.softanime.storeapp.utils.network.NetworkResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -52,4 +56,26 @@ class HomeViewModel @Inject constructor(private val repo: HomeRepo) : ViewModel(
         // Response
         _discountData.value = NetworkResponse(response).generalResponse()
     }
+
+    //<--Products-->
+
+    private fun productQueries() : HashMap<String,String>{
+        val queries = HashMap<String,String>()
+        queries[SORT] = NEW
+        return queries
+    }
+
+    private fun callProductsApi(category: ProductsCategories) = liveData {
+        val cat = category.item
+        emit(NetworkRequest.Loading())
+        val response = repo.getProductsList(cat,productQueries())
+        emit(NetworkResponse(response).generalResponse())
+    }
+
+    private val categoriesName = ProductsCategories.values()
+        .associateWith {
+            callProductsApi(it)
+        }
+
+    fun getProductsData(category : ProductsCategories) = categoriesName.getValue(category)
 }

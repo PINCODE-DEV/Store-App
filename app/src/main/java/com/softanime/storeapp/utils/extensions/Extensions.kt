@@ -47,6 +47,7 @@ fun RecyclerView.setup(lm : LayoutManager, myAdapter: RecyclerView.Adapter<*>){
     this.apply {
         layoutManager = lm
         adapter = myAdapter
+        setHasFixedSize(true)
     }
 }
 

@@ -15,12 +15,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import coil.load
 import com.softanime.storeapp.R
+import com.softanime.storeapp.data.model.home.ProductsCategories
 import com.softanime.storeapp.data.model.home.ResponseBanners.ResponseBannersItem
-import com.softanime.storeapp.data.model.home.ResponseDiscount
 import com.softanime.storeapp.data.model.home.ResponseDiscount.ResponseDiscountItem
+import com.softanime.storeapp.data.model.home.ResponseProducts
+import com.softanime.storeapp.data.model.home.ResponseProducts.SubCategory.Products.Data
 import com.softanime.storeapp.databinding.FragmentHomeBinding
 import com.softanime.storeapp.presentation.adapter.home.BannersAdapter
 import com.softanime.storeapp.presentation.adapter.home.DiscountsAdapter
+import com.softanime.storeapp.presentation.adapter.home.ProductsAdapter
 import com.softanime.storeapp.presentation.viewModel.HomeViewModel
 import com.softanime.storeapp.presentation.viewModel.ProfileViewModel
 import com.softanime.storeapp.utils.AUTO_SCROLL_TIME
@@ -29,6 +32,7 @@ import com.softanime.storeapp.utils.extensions.setup
 import com.softanime.storeapp.utils.extensions.showSnackBar
 import com.softanime.storeapp.utils.extensions.shownLoading
 import com.softanime.storeapp.utils.network.NetworkRequest
+import com.todkars.shimmer.ShimmerRecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -49,9 +53,21 @@ class HomeFragment : Fragment() {
     private val viewModel by activityViewModels<HomeViewModel>()
     private val profileViewModel by activityViewModels<ProfileViewModel>()
 
-    // Adapter
+    // Adapters
     @Inject
     lateinit var bannersAdapter: BannersAdapter
+
+    @Inject
+    lateinit var mobileProductsAdapter: ProductsAdapter
+
+    @Inject
+    lateinit var shoesProductsAdapter: ProductsAdapter
+
+    @Inject
+    lateinit var stationeryProductsAdapter: ProductsAdapter
+
+    @Inject
+    lateinit var laptopProductsAdapter: ProductsAdapter
 
     @Inject
     lateinit var discountsAdapter: DiscountsAdapter
@@ -79,6 +95,7 @@ class HomeFragment : Fragment() {
         loadProfileData()
         loadBannersData()
         loadDiscountData()
+        loadProductData()
     }
 
     private fun setupViews() {
@@ -178,6 +195,106 @@ class HomeFragment : Fragment() {
         }
     }
 
+    private fun loadProductData() {
+        binding.apply {
+            // Mobile
+            if (mobileLay.parent != null) {
+                val mobileInflate = mobileLay.inflate()
+                viewModel.getProductsData(ProductsCategories.MOBILE)
+                    .observe(viewLifecycleOwner) { request ->
+                        handleProductsRequest(
+                            request,
+                            mobileProductsAdapter,
+                            mobileInflate.findViewById(R.id.mobileProductsList)
+                        )
+                    }
+            }
+            // Shoes
+            if (shoesLay.parent != null) {
+                val shoesInflate = shoesLay.inflate()
+                viewModel.getProductsData(ProductsCategories.SHOES)
+                    .observe(viewLifecycleOwner) { request ->
+                        handleProductsRequest(
+                            request,
+                            shoesProductsAdapter,
+                            shoesInflate.findViewById(R.id.menShoesProductsList)
+                        )
+                    }
+            }
+            // Stationery
+            if (stationeryLay.parent != null) {
+                val stationeryInflate = stationeryLay.inflate()
+                viewModel.getProductsData(ProductsCategories.STATIONERY)
+                    .observe(viewLifecycleOwner) { request ->
+                        handleProductsRequest(
+                            request,
+                            stationeryProductsAdapter,
+                            stationeryInflate.findViewById(R.id.stationeryProductsList)
+                        )
+                    }
+            }
+            // Stationery
+            if (laptopLay.parent != null) {
+                val laptopInflate = laptopLay.inflate()
+                viewModel.getProductsData(ProductsCategories.LAPTOP)
+                    .observe(viewLifecycleOwner) { request ->
+                        handleProductsRequest(
+                            request,
+                            laptopProductsAdapter,
+                            laptopInflate.findViewById(R.id.laptopProductsList)
+                        )
+                    }
+            }
+        }
+    }
+
+    private fun handleProductsRequest(
+        request: NetworkRequest<ResponseProducts>,
+        adapter: ProductsAdapter,
+        recyclerView: ShimmerRecyclerView
+    ) {
+        when (request) {
+            is NetworkRequest.Loading -> {
+                recyclerView.showShimmer()
+            }
+
+            is NetworkRequest.Success -> {
+                recyclerView.hideShimmer()
+                request.data?.let { data ->
+                    data.subCategory?.let { subCategory ->
+                        subCategory.products?.let { products ->
+                            products.data?.let { myData ->
+                                if (myData.isNotEmpty()) {
+                                    initProductsRecycler(myData, recyclerView, adapter)
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            is NetworkRequest.Error -> {
+                recyclerView.hideShimmer()
+                // Show Error
+                binding.root.showSnackBar(request.message!!)
+            }
+        }
+    }
+
+    private fun initProductsRecycler(
+        data: List<Data>,
+        recyclerView: ShimmerRecyclerView,
+        adapter: ProductsAdapter
+    ) {
+        adapter.setData(data)
+        recyclerView.setup(
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false),
+            adapter
+        )
+        // item click
+        adapter.setOnItemClickListener { }
+    }
+
     private fun initDiscountRecycler(data: List<ResponseDiscountItem>) {
         discountsAdapter.setData(data)
         val lm = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, true)
@@ -265,7 +382,7 @@ class HomeFragment : Fragment() {
 
                         secondTxt.text = seconds.toString()
                     }
-                }catch (e: Exception){
+                } catch (e: Exception) {
                     e.printStackTrace()
                 }
             }
