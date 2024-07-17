@@ -11,6 +11,7 @@ const val CONNECTION_TIMEOUT = 60L
 const val PING_INTERVAL = 3L
 // Injection Named
 const val NAMED_PING = "named_ping"
+const val NAMED_VPN = "named_vpn"
 // Auth
 const val AUTHORIZATION = "authorization"
 const val BEARER = "Bearer"

@@ -1,5 +1,6 @@
 package com.softanime.storeapp.utils.extensions
 
+import android.app.Dialog
 import android.content.Context
 import android.hardware.input.InputManager
 import android.media.Image
@@ -53,4 +54,8 @@ fun RecyclerView.setup(lm : LayoutManager, myAdapter: RecyclerView.Adapter<*>){
 
 fun Int.moneySeparating(): String {
     return "${DecimalFormat("#,###.##").format(this)} تومان"
+}
+
+fun Dialog.transparentCorners(){
+    this.window!!.setBackgroundDrawableResource(android.R.color.transparent)
 }

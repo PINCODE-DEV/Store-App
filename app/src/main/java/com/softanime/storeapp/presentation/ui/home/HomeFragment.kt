@@ -27,6 +27,7 @@ import com.softanime.storeapp.presentation.adapter.home.ProductsAdapter
 import com.softanime.storeapp.presentation.viewModel.HomeViewModel
 import com.softanime.storeapp.presentation.viewModel.ProfileViewModel
 import com.softanime.storeapp.utils.AUTO_SCROLL_TIME
+import com.softanime.storeapp.utils.base.BaseFragment
 import com.softanime.storeapp.utils.extensions.loadImage
 import com.softanime.storeapp.utils.extensions.setup
 import com.softanime.storeapp.utils.extensions.showSnackBar
@@ -44,7 +45,7 @@ import javax.inject.Inject
 
 
 @AndroidEntryPoint
-class HomeFragment : Fragment() {
+class HomeFragment : BaseFragment() {
     //Binding
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!

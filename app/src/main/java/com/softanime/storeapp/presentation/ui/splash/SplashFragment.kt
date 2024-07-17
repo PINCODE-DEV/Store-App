@@ -2,24 +2,23 @@ package com.softanime.storeapp.presentation.ui.splash
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.constraintlayout.motion.widget.MotionLayout
-import androidx.constraintlayout.utils.widget.MotionLabel
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.softanime.storeapp.R
 import com.softanime.storeapp.data.stored.SessionManager
 import com.softanime.storeapp.databinding.FragmentSplashBinding
+import com.softanime.storeapp.utils.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class SplashFragment : Fragment() {
+class SplashFragment : BaseFragment() {
     //Binding
     private var _binding: FragmentSplashBinding? = null
     private val binding get() = _binding!!

@@ -1,17 +1,23 @@
 package com.softanime.storeapp.presentation.ui
 
+import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.softanime.storeapp.R
 import com.softanime.storeapp.databinding.ActivityMainBinding
+import com.softanime.storeapp.databinding.DialogCheckVpnBinding
+import com.softanime.storeapp.utils.extensions.transparentCorners
 import com.softanime.storeapp.utils.otp.AppSignatureHelper
 import dagger.hilt.android.AndroidEntryPoint
 import io.github.inflationx.viewpump.ViewPumpContextWrapper
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
@@ -26,6 +32,10 @@ class MainActivity : AppCompatActivity() {
     var hashCode = ""
     // Other
     private lateinit var navHost: NavHostFragment
+
+    // Check VPN
+    @Inject
+    lateinit var checkVpn : Flow<Boolean>
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,12 +67,38 @@ class MainActivity : AppCompatActivity() {
 
         // Generate Hash code
         generateHashCode()
+
+        // Check VPN Connection
+        checkVpn()
     }
+
     private fun generateHashCode() {
         signatureHelper.appSignatures.forEach {
             hashCode = it
             Log.i("OTP", "Hash code: $hashCode")
         }
+    }
+
+    private fun checkVpn(){
+        lifecycleScope.launch {
+            checkVpn.collect{
+                if (it) {
+                    showVpnDialog()
+                }
+            }
+        }
+    }
+
+    private fun showVpnDialog(){
+        val dialog = Dialog(this)
+        val dialogBinding = DialogCheckVpnBinding.inflate(layoutInflater)
+        dialog.transparentCorners()
+        dialog.setContentView(dialogBinding.root)
+        // Yes Btn
+        dialogBinding.yesBtn.setOnClickListener{
+            dialog.dismiss()
+        }
+        dialog.show()
     }
 
     override fun onNavigateUp(): Boolean {
