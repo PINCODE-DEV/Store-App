@@ -59,9 +59,9 @@ class SearchFragment : BaseFragment() {
                 toolbarOptionImg.isVisible = false
             }
             //Navigate to filter
-            /*filterImg.setOnClickListener {
-                findNavController().navigate(R.id.actionSearchToFilter)
-            }*/
+            filterImg.setOnClickListener {
+                findNavController().navigate(R.id.actionToSearchFilter)
+            }
             //Auto open keyboard
             lifecycleScope.launch {
                 delay(300)
@@ -81,12 +81,12 @@ class SearchFragment : BaseFragment() {
                 }
             }
             //Update sort
-            /*viewModel.filterSelectedItem.observe(viewLifecycleOwner) {
-                if (searchEdt.toString().length > 3) {
+            viewModel.filterSelectedItem.observe(viewLifecycleOwner) {
+                if (searchEdt.text.toString().length > 3) {
                     if (isNetworkAvailable)
                         viewModel.callSearchApi(viewModel.searchQueries(searchEdt.text.toString(), it))
                 }
-            }*/
+            }
         }
         //Load data
         loadSearchData()

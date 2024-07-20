@@ -27,10 +27,17 @@ const val ELECTRONIC_DEVICES = "electronic-devices"
 const val AUTO_SCROLL_TIME = 5000L
 const val SORT = "sort"
 const val Q = "q"
-const val NEW = "new"
 
 //Categories
 const val CATEGORY_MOBILE_PHONE = "category-mobile-phone"
 const val CATEGORY_MEN_SHOES = "category-men-shoes"
 const val CATEGORY_STATIONERY = "category-stationery"
 const val CATEGORY_LAPTOP = "category-laptop"
+
+//Filter
+const val NEW = "new"
+const val EXPENSIVE = "expensive"
+const val CHEEP = "cheep"
+const val RATE = "rate"
+const val SELL = "sell"
+const val HITS = "hits"
