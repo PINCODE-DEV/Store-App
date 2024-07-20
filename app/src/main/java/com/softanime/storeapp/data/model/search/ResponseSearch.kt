@@ -1,5 +1,4 @@
-package academy.nouri.storeapp.data.models.search
-
+package com.softanime.storeapp.data.model.search
 
 import com.google.gson.annotations.SerializedName
 

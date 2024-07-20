@@ -1,5 +1,6 @@
 package com.softanime.storeapp.presentation.viewModel
 
+import android.os.Parcelable
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -30,6 +31,10 @@ class HomeViewModel @Inject constructor(private val repo: HomeRepo) : ViewModel(
             callDiscountApi()
         }
     }
+
+    // Save Latest Scroll State
+    var latestScrollState : Parcelable ?= null
+    var latestRecyclerState : Parcelable ?= null
 
     // Banners Data
     private val _bannersData = MutableLiveData<NetworkRequest<ResponseBanners>>()

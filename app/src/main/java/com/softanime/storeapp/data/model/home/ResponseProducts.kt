@@ -1,8 +1,8 @@
 package com.softanime.storeapp.data.model.home
 
 
-import academy.nouri.storeapp.data.models.search.ResponseSearch
 import com.google.gson.annotations.SerializedName
+import com.softanime.storeapp.data.model.search.ResponseSearch
 
 data class ResponseProducts(
     @SerializedName("subCategory")

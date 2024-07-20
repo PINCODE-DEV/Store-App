@@ -2,12 +2,13 @@ package com.softanime.storeapp.presentation.ui.home
 
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.os.Parcelable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.view.isVisible
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -80,6 +81,7 @@ class HomeFragment : BaseFragment() {
     private val pagerSnapHelper by lazy { PagerSnapHelper() }
     private lateinit var countDownTimer: CountDownTimer
 
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -103,6 +105,12 @@ class HomeFragment : BaseFragment() {
         binding.apply {
             avatarImg.setOnClickListener {
                 findNavController().navigate(R.id.action_homeFragment_to_profileFragment)
+            }
+            // Restore Latest Scroll State
+            binding.scrollLay.onRestoreInstanceState(viewModel.latestScrollState)
+            // Navigate to search
+            searchImg.setOnClickListener {
+                findNavController().navigate(R.id.actionToSearch)
             }
         }
     }
@@ -395,6 +403,11 @@ class HomeFragment : BaseFragment() {
     override fun onStop() {
         countDownTimer.cancel()
         super.onStop()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        viewModel.latestScrollState = binding.scrollLay.onSaveInstanceState()
     }
 
     override fun onDestroy() {

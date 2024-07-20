@@ -26,6 +26,7 @@ const val GENERAL = "general"
 const val ELECTRONIC_DEVICES = "electronic-devices"
 const val AUTO_SCROLL_TIME = 5000L
 const val SORT = "sort"
+const val Q = "q"
 const val NEW = "new"
 
 //Categories
