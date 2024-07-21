@@ -25,8 +25,15 @@ var IS_CALLED_VERIFY = false
 const val GENERAL = "general"
 const val ELECTRONIC_DEVICES = "electronic-devices"
 const val AUTO_SCROLL_TIME = 5000L
-const val SORT = "sort"
 const val Q = "q"
+
+//Queries
+const val SORT = "sort"
+const val SEARCH = "search"
+const val MIN_PRICE = "minPrice"
+const val MAX_PRICE = "maxPrice"
+const val SELECTED_BRANDS = "selectedBrands"
+const val ONLY_AVAILABLE = "onlyAvailable"
 
 //Categories
 const val CATEGORY_MOBILE_PHONE = "category-mobile-phone"

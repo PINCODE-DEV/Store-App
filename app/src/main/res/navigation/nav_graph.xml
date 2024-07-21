@@ -14,10 +14,10 @@
     <!--Action to Login-->
     <action
         android:id="@+id/action_splashFragment_to_loginNav"
-        app:destination="@id/navigation" />
+        app:destination="@id/nav_on_boarding" />
     <!--Nav Login-->
     <navigation
-        android:id="@+id/navigation"
+        android:id="@+id/nav_on_boarding"
         app:startDestination="@id/logInFragment">
         <!--Login-->
         <fragment
@@ -71,7 +71,23 @@
             android:id="@+id/categoriesFragment"
             android:name="com.softanime.storeapp.presentation.ui.categories.CategoriesFragment"
             android:label="fragment_categories"
-            tools:layout="@layout/fragment_categories" />
+            tools:layout="@layout/fragment_categories">
+
+            <action
+                android:id="@+id/actionToCategoriesProducts"
+                app:destination="@id/nav_categories"
+                app:enterAnim="@anim/nav_default_enter_anim"
+                app:exitAnim="@anim/nav_default_exit_anim"
+                app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+                app:popExitAnim="@anim/nav_default_pop_exit_anim">
+
+                <argument
+                    android:name="slug"
+                    app:argType="string" />
+
+            </action>
+
+        </fragment>
         <!--Home Frag-->
         <fragment
             android:id="@+id/homeFragment"
@@ -95,9 +111,11 @@
         app:exitAnim="@anim/nav_default_exit_anim"
         app:popEnterAnim="@anim/nav_default_pop_enter_anim"
         app:popExitAnim="@anim/nav_default_pop_exit_anim" />
-    <!--Search Frag-->
-    <navigation android:id="@+id/nav_search"
+    <!--Nav Search-->
+    <navigation
+        android:id="@+id/nav_search"
         app:startDestination="@id/searchFragment">
+        <!--Search Frag-->
         <fragment
             android:id="@+id/searchFragment"
             android:name="com.softanime.storeapp.presentation.ui.search.SearchFragment"
@@ -113,4 +131,29 @@
             android:label="fragment_search_filter"
             tools:layout="@layout/fragment_search_filter" />
     </navigation>
+    <!--Categories Nav-->
+    <navigation
+        android:id="@+id/nav_categories"
+        app:startDestination="@id/categoriesProductsFragment">
+        <fragment
+            android:id="@+id/categoriesProductsFragment"
+            android:name="com.softanime.storeapp.presentation.ui.categories.categories_products.CategoriesProductsFragment"
+            android:label="CategoriesProductsFragment">
+            <argument
+                android:name="slug"
+                app:argType="string" />
+            <action
+                android:id="@+id/actionCategoryToFilter"
+                app:destination="@id/categoriesFilterFragment"
+                app:enterAnim="@anim/nav_default_enter_anim"
+                app:exitAnim="@anim/nav_default_exit_anim"
+                app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+                app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+        </fragment>
+        <dialog
+            android:id="@+id/categoriesFilterFragment"
+            android:name="com.softanime.storeapp.presentation.ui.categories.categories_filter.CategoriesFilterFragment"
+            android:label="CategoriesFilterFragment" />
+    </navigation>
+
 </navigation>

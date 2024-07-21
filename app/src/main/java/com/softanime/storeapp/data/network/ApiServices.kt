@@ -3,6 +3,7 @@ package com.softanime.storeapp.data.network
 import academy.nouri.storeapp.data.models.login.BodyLogin
 import academy.nouri.storeapp.data.models.login.ResponseLogin
 import academy.nouri.storeapp.data.models.profile.ResponseProfile
+import com.softanime.storeapp.data.model.categories.ResponseCategories
 import com.softanime.storeapp.data.model.home.ResponseBanners
 import com.softanime.storeapp.data.model.home.ResponseDiscount
 import com.softanime.storeapp.data.model.home.ResponseProducts
@@ -36,5 +37,9 @@ interface ApiServices {
 
     @GET("search")
     suspend fun getSearchList(@QueryMap queries: Map<String, String>): Response<ResponseSearch>
+
+    @GET("menu")
+    suspend fun getCategoriesList(): Response<ResponseCategories>
+
 
 }

@@ -1,60 +1,100 @@
 package com.softanime.storeapp.presentation.ui.categories
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.softanime.storeapp.R
+import com.softanime.storeapp.data.model.categories.ResponseCategories.ResponseCategoriesItem
+import com.softanime.storeapp.databinding.FragmentCategoriesBinding
+import com.softanime.storeapp.presentation.adapter.categories.CategoryAdapter
+import com.softanime.storeapp.presentation.ui.categories.CategoriesFragmentDirections
+import com.softanime.storeapp.presentation.viewModel.CategoriesViewModel
+import com.softanime.storeapp.utils.extensions.setup
+import com.softanime.storeapp.utils.extensions.showSnackBar
+import com.softanime.storeapp.utils.network.NetworkRequest
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [CategoriesFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
+@AndroidEntryPoint
 class CategoriesFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    //Binding
+    private var _binding: FragmentCategoriesBinding? = null
+    private val binding get() = _binding!!
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    // Adapter
+    @Inject
+    lateinit var categoryAdapter: CategoryAdapter
+
+    // ViewModel
+    private val viewModel by activityViewModels<CategoriesViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_categories, container, false)
+    ): View {
+        _binding = FragmentCategoriesBinding.inflate(layoutInflater)
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment CategoriesFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            CategoriesFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        //Init views
+        binding.apply {
+            //Toolbar
+            toolbar.apply {
+                //Visibility
+                toolbarBackImg.isVisible = false
+                toolbarOptionImg.isVisible = false
+                //Title
+                toolbarTitleTxt.text = getString(R.string.categories)
+            }
+        }
+        //Load data
+        loadCategoriesData()
+    }
+
+    private fun loadCategoriesData() {
+        binding.apply {
+            viewModel.categoriesData.observe(viewLifecycleOwner) { response ->
+                when (response) {
+                    is NetworkRequest.Loading -> {
+                        categoriesList.showShimmer()
+                    }
+
+                    is NetworkRequest.Success -> {
+                        categoriesList.hideShimmer()
+                        response.data?.let { data ->
+                            initCategoriesRecycler(data)
+                        }
+                    }
+
+                    is NetworkRequest.Error -> {
+                        categoriesList.hideShimmer()
+                        root.showSnackBar(response.message!!)
+                    }
                 }
             }
+        }
+    }
+
+    private fun initCategoriesRecycler(data: List<ResponseCategoriesItem>) {
+        categoryAdapter.setData(data.dropLast(1))
+        binding.categoriesList.setup(LinearLayoutManager(requireContext()), categoryAdapter)
+        //Click
+        categoryAdapter.setOnItemClickListener {
+            val direction = CategoriesFragmentDirections.actionToCategoriesProducts(it)
+            findNavController().navigate(direction)
+        }
+    }
+
+    override fun onDestroy() {
+        _binding = null
+        super.onDestroy()
     }
 }
