@@ -4,7 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.softanime.storeapp.data.model.categories.FilterCategoryModel
 import com.softanime.storeapp.data.model.home.ResponseProducts
+import com.softanime.storeapp.data.model.search.FilterModel
 import com.softanime.storeapp.data.repository.CategoryProductRepository
 import com.softanime.storeapp.data.repository.SearchFilterRepository
 import com.softanime.storeapp.utils.MAX_PRICE
@@ -57,5 +59,24 @@ class CategoryProductViewModel @Inject constructor(
         _productData.value = NetworkRequest.Loading()
         val response = repository.getProductsList(slug, queries)
         _productData.value = NetworkResponse(response).generalResponse()
+    }
+
+    //Sorts list
+    private val _filterData = MutableLiveData<MutableList<FilterModel>>()
+    val filterData: LiveData<MutableList<FilterModel>> = _filterData
+
+    fun getFilterData() = viewModelScope.launch {
+        _filterData.value = filterRepository.fillFilterData()
+    }
+
+    //Filter Data
+    private val _filterCategoryData = MutableLiveData<FilterCategoryModel>()
+    val filterCategoryData: LiveData<FilterCategoryModel> = _filterCategoryData
+
+    fun sendCategoryData(
+        sort: String? = null, search: String? = null, minPrice: String? = null, maxPrice: String? = null,
+        available: Boolean? = null
+    ) {
+        _filterCategoryData.value = FilterCategoryModel(sort, search, minPrice, maxPrice, available)
     }
 }

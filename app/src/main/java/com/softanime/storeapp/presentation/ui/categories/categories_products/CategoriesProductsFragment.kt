@@ -69,6 +69,8 @@ class CategoriesProductsFragment : BaseFragment() {
 
         //Load data
         loadProductsData()
+        //Update data
+        receiveCategoryFilter()
     }
 
     private fun loadProductsData() {
@@ -114,6 +116,19 @@ class CategoriesProductsFragment : BaseFragment() {
         //Click
         productsAdapter.setOnItemClickListener {
 
+        }
+    }
+
+    private fun receiveCategoryFilter() {
+        viewModel.filterCategoryData.observe(viewLifecycleOwner) {
+            if (isNetworkAvailable)
+                viewModel.callProductsApi(
+                    slug,
+                    viewModel.productsQueries(
+                        sort = it.sort, search = it.search, minPrice = it.minPrice, maxPrice = it.maxPrice,
+                        available = it.available
+                    )
+                )
         }
     }
 
